@@ -38,8 +38,9 @@ const app = new Vue({
                 product.quantity = 1;
                 this.cart.push(product);
             } else {
-                app.cart[index].quantity++
-                // this.cart.map( x => (x.id === product.id)&&( x.quantity++ ) )
+                const item = this.cart[index];
+                item.quantity++
+                Vue.set(this.cart, index, item);
             }
         },
     },
