@@ -1,4 +1,4 @@
-new Vue({
+const app = new Vue({
     el: '#app',
     data: {
         test: "test text",
@@ -33,14 +33,13 @@ new Vue({
     },
     methods: {
         addItem: function(product) {
-            const item = this.cart.find( item => item.id === product.id)
-            if ( item ) {
-                item.quantity++;
-                this.cart.map( x => (x.id === product.id)&&( x.quantity++ ) )
-            } else {
+            const index = this.cart.findIndex( item => item.id === product.id)
+            if ( index === -1 ) {
                 product.quantity = 1;
                 this.cart.push(product);
-
+            } else {
+                app.cart[index].quantity++
+                // this.cart.map( x => (x.id === product.id)&&( x.quantity++ ) )
             }
         },
     },
