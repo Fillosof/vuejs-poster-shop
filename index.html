@@ -24,9 +24,9 @@
             <div class="product" v-for="product in products" :key="product.id">
                 <h4 class="product-title">
                     {{ product.title }} x 
-                    {{ product.price }}$
+                    {{ product.price | currency }}
                 </h4>
-                <button class="add-to-cart" @click="addItem(product)">Add to cart</button>
+                <button class="add-to-cart btn" @click="addItem(product)">Add to cart</button>
             </div>
         </div>
         <div class="cart">
@@ -36,18 +36,20 @@
             </div>
             <div v-if="cart.length">
                 <ul>
-                    <li class="cart-item" v-for="cartItem in cart" :key="cartItem.id">
+                    <li class="cart-item" v-for="(cartItem, index) in cart">
                         <div class="item-title">
                             <b>{{ cartItem.title }}  </b>
                         </div>
                         <div class="item-qty">
-                            ${{ cartItem.price }} * {{ cartItem.quantity }} =
-                            {{ cartItem.price * cartItem.quantity }}
+                            ${{ cartItem.price | currency }} * {{ cartItem.quantity }} =
+                            {{ cartItem.price * cartItem.quantity | currency }}
                         </div>
+                        <button class="btn" @click="incrementCartItem(cartItem, index)">+</button>
+                        <button class="btn" @click="decrementCartItem(cartItem, index)">-</button>
                     </li>
                 </ul>
                 <hr>
-                <div>Total: {{ total }}$</div>
+                <div>Total: {{ total | currency }}$</div>
             </div>
         </div>
     </div>

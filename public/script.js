@@ -11,12 +11,12 @@ const app = new Vue({
             {
                 id: 2, 
                 title: 'Item 2',
-                price: 3,
+                price: 9.9999,
             },
             {
                 id: 3, 
                 title: 'Item 3',
-                price: 3,
+                price: 9.88888,
             },
             {
                 id: 4, 
@@ -43,11 +43,28 @@ const app = new Vue({
                 Vue.set(this.cart, index, item);
             }
         },
+        incrementCartItem: function(item, index) {
+            item.quantity++
+            Vue.set(this.cart, index, item);
+        },   
+        decrementCartItem: function(item, index) {
+            if (item.quantity > 1 ) {
+                item.quantity--
+                Vue.set(this.cart, index, item);
+            } else {
+                this.cart.splice( this.cart.indexOf(item), 1)
+            }
+        },   
     },
     computed: {
         total: function () {
             return this.cart.reduce( (sum, x) => sum += x.price * x.quantity, 0 );
         }
-
+    },
+    filters: {
+        currency: function (sum) {
+            return `$${sum.toFixed(2)}`
+            
+        }
     }
 })
