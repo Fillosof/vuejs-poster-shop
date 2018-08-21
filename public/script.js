@@ -2,36 +2,30 @@ const app = new Vue({
     el: '#app',
     data: {
         test: "test text",
-        products: [
-            {
-                id: 1, 
-                title: 'Item 1',
-                price: 3,
-            },
-            {
-                id: 2, 
-                title: 'Item 2',
-                price: 9.9999,
-            },
-            {
-                id: 3, 
-                title: 'Item 3',
-                price: 9.88888,
-            },
-            {
-                id: 4, 
-                title: 'Item 4',
-                price: 3,
-            },
-            {
-                id: 5, 
-                title: 'Item 5',
-                price: 3,
-            },
-        ],
+        products: [],
         cart: [],
+        search: '',
+        prevSearch: '',
     },
     methods: {
+        onSubmit: function () {
+            this.$http
+                .get('/search/'+this.search)
+                .then(
+                    res => {
+                        this.products = res.body
+                            .map(({id,title,link}) => {
+                                item = {id,title,link};
+                                item.price = +(Math.random() * 10 + 1).toFixed(2);
+                                return item;
+                            });
+                        console.log(this.products);
+                        this.prevSearch = this.search
+                    },
+                    err => console.log(err),                    
+                )
+                .catch(err => console.log(err))  
+        },
         addItem: function(product) {
             const index = this.cart.findIndex( item => item.id === product.id)
             if ( index === -1 ) {
@@ -57,8 +51,11 @@ const app = new Vue({
         },   
     },
     computed: {
-        total: function () {
+        cartTotal: function () {
             return this.cart.reduce( (sum, x) => sum += x.price * x.quantity, 0 );
+        },
+        searchResultCount: function () {
+            return this.products.length
         }
     },
     filters: {

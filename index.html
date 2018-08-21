@@ -17,16 +17,29 @@
 <div id="app">
     <div class="header">
         <h1>Vue.js Poster Store</h1>
+        <form class="searchbar" @submit.prevent="onSubmit">
+            <input type="text" v-model="search" placeholder="Search some goods" class="">
+            <input type="submit" value="Search" class="btn">
+        </form>
     </div>
     <div class="main">
         <div class="products">
-            <p>Products go here.</p>
+            <p v-if="prevSearch">find {{searchResultCount}} of {{prevSearch}}</p>
             <div class="product" v-for="product in products" :key="product.id">
-                <h4 class="product-title">
-                    {{ product.title }} x 
-                    {{ product.price | currency }}
-                </h4>
-                <button class="add-to-cart btn" @click="addItem(product)">Add to cart</button>
+                <div>
+                    <div class="product-image">
+                        <img :src="product.link" :alt="product.title">
+                    </div>
+                </div>
+                <div>
+                    <h4 class="product-title">
+                        {{ product.title }}
+                    </h4>
+                    <h4 class="product-title">
+                            Bye only for: {{ product.price | currency }}
+                        </h4>
+                    <button class="add-to-cart btn" @click="addItem(product)">Add to cart</button>
+                </div>
             </div>
         </div>
         <div class="cart">
@@ -41,7 +54,7 @@
                             <b>{{ cartItem.title }}  </b>
                         </div>
                         <div class="item-qty">
-                            ${{ cartItem.price | currency }} * {{ cartItem.quantity }} =
+                            {{ cartItem.price | currency }} * {{ cartItem.quantity }} =
                             {{ cartItem.price * cartItem.quantity | currency }}
                         </div>
                         <button class="btn" @click="incrementCartItem(cartItem, index)">+</button>
@@ -49,7 +62,7 @@
                     </li>
                 </ul>
                 <hr>
-                <div>Total: {{ total | currency }}$</div>
+                <div>Total: {{ cartTotal | currency }}$</div>
             </div>
         </div>
     </div>
@@ -58,6 +71,7 @@
 <!-- Scripts -->
 <script src="/reload/reload.js"></script>
 <script src="/node_modules/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 <script type="text/javascript" src="public/script.js"></script>
 
 </body>
