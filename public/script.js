@@ -4,11 +4,12 @@ const app = new Vue({
         test: "test text",
         products: [],
         cart: [],
-        search: '',
+        search: 'Best of the Best',
         prevSearch: '',
     },
     methods: {
         onSubmit: function () {
+            this.products = [];
             this.$http
                 .get('/search/'+this.search)
                 .then(
@@ -63,5 +64,8 @@ const app = new Vue({
             return `$${sum.toFixed(2)}`
             
         }
+    },
+    mounted: function() {
+        this.onSubmit();
     }
 })
